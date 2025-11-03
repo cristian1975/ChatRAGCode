@@ -70,7 +70,7 @@ def ask_and_get_answer(vector_store, q, k=3):
 # calculate embedding cost using tiktoken
 def calculate_embedding_cost(texts):
     import tiktoken
-    enc = tiktoken.encoding_for_model('mxbai-embed-large:latest')
+    enc = tiktoken.encoding_for_model('text-embedding-3-small')
     total_tokens = sum([len(enc.encode(page.page_content)) for page in texts])
     # check prices here: https://openai.com/pricing
     # print(f'Total Tokens: {total_tokens}')
