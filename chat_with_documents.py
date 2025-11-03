@@ -1,9 +1,7 @@
 # Install all libraries by running in the terminal: pip install -q -r ./requirements.txt
 #Important! run command: uv run streamlit run chat_with_documents.py
 
-import chromadb
 from langchain_community import embeddings
-import ollama
 import streamlit as st
 #from langchain_openai import OpenAIEmbeddings
 from langchain_ollama import ChatOllama
@@ -44,16 +42,7 @@ def chunk_data(data, chunk_size=256, chunk_overlap=20):
 # create embeddings using OpenAIEmbeddings() and save them in a Chroma vector store
 def create_embeddings(chunks):
     #embeddings = OpenAIEmbeddings(model='text-embedding-3-small', dimensions=1536)  # 512 works as well
-    #client = chromadb.Client()
-    #collection = client.create_collection(name="docs")
-    #for i, d in enumerate(chunks):
-    #    response = ollama.embed(model="mxbai-embed-large:latest", input=d)
-    #    embeddings = response["embeddings"]
-        #collection.add(
-        #    ids=[str(i)],
-        #    embeddings=embeddings,
-        #    documents=[d]
-        #)
+    
     vector_store = Chroma.from_documents(
         documents=chunks,
         collection_name="rag-chroma",
@@ -81,7 +70,7 @@ def ask_and_get_answer(vector_store, q, k=3):
 # calculate embedding cost using tiktoken
 def calculate_embedding_cost(texts):
     import tiktoken
-    enc = tiktoken.encoding_for_model('text-embedding-3-small')
+    enc = tiktoken.encoding_for_model('mxbai-embed-large:latest')
     total_tokens = sum([len(enc.encode(page.page_content)) for page in texts])
     # check prices here: https://openai.com/pricing
     # print(f'Total Tokens: {total_tokens}')
